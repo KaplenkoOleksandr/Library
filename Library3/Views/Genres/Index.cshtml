@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Library3.Genres>
+
+@{
+    ViewData["Title"] = "Genres - ";
+}
+
+<h1>Всі жанри</h1>
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <div>
+        <h3>Оберіть exel-файл для заватаження</h3>
+        @using (Html.BeginForm("Import", "Genres", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-excel" }))
+        {
+            <div>
+                <input type="file" name="fileExcel" id="fileExcel" />
+                <input class="knopka_all" style="margin-left:0%;" type="submit" value="Завантажити" />
+            </div>
+        }
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Information)
+                </td>
+                <td class="td">
+                    @if (User.IsInRole("admin"))
+                    {
+
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit |</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete |</a>
+                    }
+                    @Html.ActionLink("Books", "Index", "BookGenres", new { id = item.Id, name = item.Name })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
